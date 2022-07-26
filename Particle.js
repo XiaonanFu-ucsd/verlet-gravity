@@ -41,33 +41,66 @@ export class Particle {
         this.F = new THREE.Vector3(0, 0, 0);
     }
 
+    // sync() { // Euler method
+    //     //console.log("before sync", this.pos); ///////////////
+
+    //     let a = new THREE.Vector3(0, 0, 0);
+    //     a.copy(this.F);
+    //     a.divideScalar(this.m);
+    //     this.F = new THREE.Vector3(0, 0, 0); // reset Force
+
+    //     //console.log("after acc", a); ////////
+
+    //     let newPos = new THREE.Vector3(0, 0, 0);
+    //     newPos.add(this.pos);
+
+    //     //console.log("v-before sec term", this.v, this.lastPos, this.pos); ////////
+    //     this.v.copy(this.pos);
+    //     this.v.sub(this.lastPos);
+    //     this.v.divideScalar(timeIntervel);
+
+    //     let secondTerm = new THREE.Vector3(0, 0, 0);
+    //     secondTerm.copy(this.v);
+    //     secondTerm.multiplyScalar(timeIntervel)
+    //     newPos.add(secondTerm);
+    //     //console.log("after sec term", this.v); ////////
+
+    //     let thirdTerm = new THREE.Vector3(0, 0, 0);
+    //     thirdTerm.copy(a);
+    //     thirdTerm.multiplyScalar(timeIntervel ** 2 / 2);
+
+    //     newPos.add(thirdTerm);
+    //     //console.log("after 3 term", newPos); ////////
+
+    //     this.lastPos = this.pos;
+    //     this.pos = newPos;
+    //     //console.log("after sync", this.pos); ////////
+    // }
+
     sync() {
         //console.log("before sync", this.pos); ///////////////
 
         let a = new THREE.Vector3(0, 0, 0);
         a.copy(this.F);
         a.divideScalar(this.m);
-        this.F = new THREE.Vector3(0, 0, 0);
+        this.F = new THREE.Vector3(0, 0, 0); // reset Force
 
         //console.log("after acc", a); ////////
 
         let newPos = new THREE.Vector3(0, 0, 0);
         newPos.add(this.pos);
+        newPos.add(this.pos);
+
+        newPos.sub(this.lastPos);
 
         //console.log("v-before sec term", this.v, this.lastPos, this.pos); ////////
         this.v.copy(this.pos);
         this.v.sub(this.lastPos);
         this.v.divideScalar(timeIntervel);
 
-        let secondTerm = new THREE.Vector3(0, 0, 0);
-        secondTerm.copy(this.v);
-        secondTerm.multiplyScalar(timeIntervel)
-        newPos.add(secondTerm);
-        //console.log("after sec term", this.v); ////////
-
         let thirdTerm = new THREE.Vector3(0, 0, 0);
         thirdTerm.copy(a);
-        thirdTerm.multiplyScalar(timeIntervel ** 2 / 2);
+        thirdTerm.multiplyScalar(timeIntervel ** 2);
 
         newPos.add(thirdTerm);
         //console.log("after 3 term", newPos); ////////
